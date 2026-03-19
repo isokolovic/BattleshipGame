@@ -1,31 +1,39 @@
-﻿using System.Linq;
-
-namespace Battleship.Model
+﻿namespace Battleship.Model
 {
+    /// <summary>Probes the four cardinal neighbours of the first hit square to find ship orientation.</summary>
     public class SurroundingShooting : INextTarget
     {
-        public SurroundingShooting(EnemyGrid grid, Square firstSquareHit, int shipLength)
+        #region Fields
+
+        private readonly Square firstSquareHit;
+        private readonly EnemyGrid grid;
+
+        #endregion
+
+        #region Constructor
+
+        public SurroundingShooting(EnemyGrid grid, Square firstSquareHit)
         {
             this.grid = grid;
             this.firstSquareHit = firstSquareHit;
-            this.shipLength = shipLength;
         }
 
-        private readonly Square firstSquareHit;
-        private EnemyGrid grid;
-        private int shipLength;
+        #endregion
 
-        public Square NextTarget()
+        #region Public Methods
+
+        /// <summary>Returns any untouched cardinal neighbour of the first hit, or null if all are taken.</summary>
+        public Square? NextTarget()
         {
             int r = firstSquareHit.Row;
             int c = firstSquareHit.Column;
-            var candidates = grid.Squares.Where(s => s.SquareState == SquareState.Initial && ((s.Row == r && (s.Column == c - 1 || s.Column == c + 1)) || (s.Column == c && (s.Row == r - 1 || s.Row == r + 1))));
 
-            if (!candidates.Any())
-                return null;
-
-            return candidates.FirstOrDefault();
-
+            return grid.Squares.FirstOrDefault(s =>
+                s.State == SquareState.Initial &&
+                ((s.Row == r && (s.Column == c - 1 || s.Column == c + 1)) ||
+                 (s.Column == c && (s.Row == r - 1 || s.Row == r + 1))));
         }
+
+        #endregion
     }
 }

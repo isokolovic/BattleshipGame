@@ -8,10 +8,12 @@ namespace Battleship
     [TestClass]
     public class TestFleet
     {
+        /// <summary>Each CreateShip call increments the Ships count by one.</summary>
         [TestMethod]
         public void CreateShipAddsNewShipToFleet()
         {
-            Fleet fleet = new Fleet();
+            var fleet = new Fleet();
+
             fleet.CreateShip(new List<Square> { new Square(1, 1), new Square(1, 2), new Square(1, 3) });
             Assert.AreEqual(1, fleet.Ships.Count());
 

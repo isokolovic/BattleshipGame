@@ -1,15 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Battleship.Model
+﻿namespace Battleship.Model
 {
-    public enum ShipPosition
-    {
-        Horizontal,
-        Vertical
-    }
+    /// <summary>Horizontal or vertical orientation of a partially hit ship.</summary>
+    public enum ShipPosition { Horizontal, Vertical }
+
+    /// <summary>Extends shots along the confirmed ship axis once two hits fix the orientation.</summary>
     public class InlineShooting : INextTarget
     {
+        #region Fields
+
+        private readonly EnemyGrid grid;
+        private readonly List<Square> squaresAlreadyHit;
+        private readonly int shipLength;
+
+        #endregion
+
+        #region Constructor
+
         public InlineShooting(EnemyGrid grid, List<Square> squaresAlreadyHit, int shipLength)
         {
             this.grid = grid;
@@ -17,46 +23,57 @@ namespace Battleship.Model
             this.shipLength = shipLength;
         }
 
-        private EnemyGrid grid;
-        private List<Square> squaresAlreadyHit;
-        private int shipLength;
+        #endregion
 
-        public Square NextTarget()
+        #region Public Methods
+
+        /// <summary>
+        /// Scans both ends of the hit sequence.
+        /// Shoots toward whichever end has more open space.
+        /// Returns null if both ends are blocked.
+        /// </summary>
+        public Square? NextTarget()
         {
-            IEnumerable<Square> candidatesFirst;
-            IEnumerable<Square> candidatesLast;
+            IEnumerable<Square> first, last;
 
-            var shipPosition = getShipPosition();
-
-            if (shipPosition == ShipPosition.Horizontal)
+            if (GetShipPosition() == ShipPosition.Horizontal)
             {
-                int row = squaresAlreadyHit.FirstOrDefault().Row;
+                int row = squaresAlreadyHit.First().Row;
                 int firstColumn = squaresAlreadyHit.Min(x => x.Column);
                 int lastColumn = squaresAlreadyHit.Max(x => x.Column);
-                candidatesFirst = grid.GetAvailableSquares(row, firstColumn, Direction.Leftwards);
-                candidatesLast = grid.GetAvailableSquares(row, lastColumn, Direction.Rightwards);
+                first = grid.GetAvailableSquares(row, firstColumn, Direction.Leftwards);
+                last = grid.GetAvailableSquares(row, lastColumn, Direction.Rightwards);
             }
             else
             {
-                int column = squaresAlreadyHit.FirstOrDefault().Column;
+                int col = squaresAlreadyHit.First().Column;
                 int firstRow = squaresAlreadyHit.Min(x => x.Row);
                 int lastRow = squaresAlreadyHit.Max(x => x.Row);
-
-                candidatesFirst = grid.GetAvailableSquares(firstRow, column, Direction.Upwards);
-                candidatesLast = grid.GetAvailableSquares(lastRow, column, Direction.Bottomwards);
+                first = grid.GetAvailableSquares(firstRow, col, Direction.Upwards);
+                last = grid.GetAvailableSquares(lastRow, col, Direction.Bottomwards);
             }
 
-            return candidatesFirst.Count() > candidatesLast.Count() ? candidatesFirst.First() : candidatesLast.First();
+            var firstList = first.ToList();
+            var lastList = last.ToList();
 
+            if (!firstList.Any() && !lastList.Any()) return null;
+            if (!firstList.Any()) return lastList.First();
+            if (!lastList.Any()) return firstList.First();
+
+            return firstList.Count > lastList.Count ? firstList.First() : lastList.First();
         }
 
-        ShipPosition getShipPosition()
-        {
-            if (squaresAlreadyHit.First().Row == squaresAlreadyHit.Last().Row &&
-                squaresAlreadyHit.First().Column != squaresAlreadyHit.Last().Column)
-                return ShipPosition.Horizontal;
+        #endregion
 
-            return ShipPosition.Vertical;
-        }
+        #region Private Methods
+
+        /// <summary>Two hits sharing a row means horizontal; otherwise vertical.</summary>
+        private ShipPosition GetShipPosition() =>
+            squaresAlreadyHit.First().Row == squaresAlreadyHit.Last().Row &&
+            squaresAlreadyHit.First().Column != squaresAlreadyHit.Last().Column
+                ? ShipPosition.Horizontal
+                : ShipPosition.Vertical;
+
+        #endregion
     }
 }

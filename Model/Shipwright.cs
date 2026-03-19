@@ -1,11 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Battleship.Model
+﻿namespace Battleship.Model
 {
+    /// <summary>Randomly places ships on a grid, respecting the no-adjacency rule.</summary>
     public class Shipwright
     {
+        #region Fields
+
+        private FleetGrid grid;
+        private readonly IEnumerable<int> shipLengths;
+        private readonly SquareEliminator squareEliminator;
+        private readonly Random random = new Random();
+
+        #endregion
+
+        #region Constructor
+
         public Shipwright(int rows, int columns, IEnumerable<int> shipLengths)
         {
             grid = new FleetGrid(rows, columns);
@@ -13,39 +21,39 @@ namespace Battleship.Model
             squareEliminator = new SquareEliminator(rows, columns);
         }
 
-        private FleetGrid grid;
-        private IEnumerable<int> shipLengths;
-        private Random random = new Random();
-        private SquareEliminator squareEliminator;
+        #endregion
 
+        #region Public Methods
+
+        /// <summary>
+        /// Tries to place all ships randomly.
+        /// Returns an empty Fleet if placement fails — caller must retry.
+        /// </summary>
         public Fleet CreateFleet()
         {
-            Fleet fleet = new Fleet();
+            var fleet = new Fleet();
 
             foreach (int shipLength in shipLengths)
             {
-                var availablePlacements = grid.GetAvailablePlacements(shipLength);
+                var placements = grid.GetAvailablePlacements(shipLength);
 
-                if (!availablePlacements.Any())
+                if (!placements.Any())
                 {
-                    fleet = new Fleet();
+                    // Placement failed — reset and signal caller to retry
                     grid = new FleetGrid(grid.Rows, grid.Columns);
-                    break;
+                    return new Fleet();
                 }
 
-                int index = random.Next(availablePlacements.Count());
+                var selected = placements.ElementAt(random.Next(placements.Count()));
+                fleet.CreateShip(selected);
 
-                var selectedPlacement = availablePlacements.ElementAt(index);
-                fleet.CreateShip(selectedPlacement);
-
-                var toEliminate = squareEliminator.ToEliminate(selectedPlacement);
-                foreach (var square in toEliminate)
-                {
-                    grid.EliminateSquare(square.Row, square.Column);
-                }
+                foreach (var sq in squareEliminator.ToEliminate(selected))
+                    grid.EliminateSquare(sq.Row, sq.Column);
             }
 
             return fleet;
         }
+
+        #endregion
     }
 }

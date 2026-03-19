@@ -7,14 +7,12 @@ namespace Battleship
     [TestClass]
     public class TestRandomShooting
     {
+        /// <summary>Target is always one of the grid's available squares.</summary>
         [TestMethod]
         public void RandomShootingSelectsOneOfSquaresFromEmptyGrid()
         {
             var grid = new EnemyGrid(10, 10);
-            int shipLength = 3;
-            var random = new RandomShooting(grid, shipLength);
-            var next = random.NextTarget();
-            CollectionAssert.Contains(grid.Squares.ToArray(), next);
+            CollectionAssert.Contains(grid.Squares.ToArray(), new RandomShooting(grid, 3).NextTarget());
         }
     }
 }
