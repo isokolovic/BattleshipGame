@@ -1,6 +1,6 @@
 ﻿namespace Battleship.Model
 {
-    /// <summary>Square states in lifecycle order. Numeric order matters — do not reorder.</summary>
+    /// <summary>Square states in lifecycle order. Numeric order matters - do not reorder.</summary>
     public enum SquareState
     {
         Initial,

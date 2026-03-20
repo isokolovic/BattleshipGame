@@ -27,7 +27,7 @@
 
         /// <summary>
         /// Tries to place all ships randomly.
-        /// Returns an empty Fleet if placement fails — caller must retry.
+        /// Returns an empty Fleet if placement fails - caller must retry.
         /// </summary>
         public Fleet CreateFleet()
         {
@@ -39,7 +39,7 @@
 
                 if (!placements.Any())
                 {
-                    // Placement failed — reset and signal caller to retry
+                    // Placement failed - reset and signal caller to retry
                     grid = new FleetGrid(grid.Rows, grid.Columns);
                     return new Fleet();
                 }

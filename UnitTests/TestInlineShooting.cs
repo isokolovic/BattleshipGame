@@ -7,7 +7,7 @@ namespace Battleship
     [TestClass]
     public class TestInlineShooting
     {
-        /// <summary>Vertical hits at (3,3) and (4,3) — next target is either end of the sequence.</summary>
+        /// <summary>Vertical hits at (3,3) and (4,3) - next target is either end of the sequence.</summary>
         [TestMethod]
         public void NextTargetIsSquare2_3OrSquare5_3AfterSquares3_3And4_3AreHit()
         {
@@ -17,7 +17,7 @@ namespace Battleship
                 new List<Square> { new Square(2, 3), new Square(5, 3) }, inline.NextTarget());
         }
 
-        /// <summary>Same squares in reverse order — result is identical.</summary>
+        /// <summary>Same squares in reverse order - result is identical.</summary>
         [TestMethod]
         public void NextTargetIsSquare2_3OrSquare5_3AfterSquares4_3And3_3AreHit()
         {
@@ -27,7 +27,7 @@ namespace Battleship
                 new List<Square> { new Square(2, 3), new Square(5, 3) }, inline.NextTarget());
         }
 
-        /// <summary>Four horizontal hits — next target is either open end of the run.</summary>
+        /// <summary>Four horizontal hits - next target is either open end of the run.</summary>
         [TestMethod]
         public void NextTargetIsSquare4_2OrSquare4_7AfterSquares4_4And4_5And4_6And4_3AreHit()
         {

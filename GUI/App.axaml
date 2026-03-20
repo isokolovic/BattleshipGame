@@ -1,15 +1,36 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="GUI.App"
              xmlns:local="using:GUI"
-             RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+             x:Class="GUI.App"
+             RequestedThemeVariant="Light">
 
-    <Application.DataTemplates>
-        <local:ViewLocator/>
-    </Application.DataTemplates>
-  
-    <Application.Styles>
-        <FluentTheme />
-    </Application.Styles>
+	<Application.DataTemplates>
+		<local:ViewLocator/>
+	</Application.DataTemplates>
+
+	<Application.Styles>
+		<FluentTheme />
+
+		<Style Selector="Border.clickable">
+			<Setter Property="Cursor" Value="Hand"/>
+		</Style>
+
+		<Style Selector="Border.cell.clickable:pointerover">
+			<Setter Property="Opacity" Value="0.75"/>
+		</Style>
+
+		<Style Selector="Border.grid-panel">
+			<Setter Property="Background" Value="White"/>
+			<Setter Property="BorderBrush" Value="#E0E0E0"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="CornerRadius" Value="12"/>
+			<Setter Property="Padding" Value="8,6"/>
+		</Style>
+
+		<Style Selector="Border.grid-panel.active">
+			<Setter Property="BorderBrush" Value="#4CAF50"/>
+		</Style>
+
+	</Application.Styles>
+
 </Application>

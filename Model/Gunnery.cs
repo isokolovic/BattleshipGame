@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace Battleship.Model
 {
-    /// <summary>Shooting phases — escalates as hits accumulate, resets on sunk.</summary>
+    /// <summary>Shooting phases - escalates as hits accumulate, resets on sunk.</summary>
     public enum ShootingTactics { Random, Surrounding, Inline }
 
     /// <summary>
     /// Runs the three-phase targeting loop:
-    /// Random → first hit → Surrounding → second hit → Inline → ship sunk → Random.
+    /// Random -> first hit -> Surrounding -> second hit -> Inline -> ship sunk -> Random.
     /// </summary>
     public class Gunnery
     {
@@ -133,7 +133,8 @@ namespace Battleship.Model
         private void ChangeToRandomTactics()
         {
             currentTactics = ShootingTactics.Random;
-            targetSelector = new RandomShooting(monitoringGrid, shipsToShoot[0]);
+            if (shipsToShoot.Count > 0)
+                targetSelector = new RandomShooting(monitoringGrid, shipsToShoot[0]);
         }
 
         #endregion

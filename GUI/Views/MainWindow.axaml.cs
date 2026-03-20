@@ -1,11 +1,10 @@
 using Avalonia.Controls;
 
-namespace GUI.Views;
-
-public partial class MainWindow : Window
+namespace GUI.Views
 {
-    public MainWindow()
+    /// <summary>Shell window; content switches between StartView and GameView.</summary>
+    public partial class MainWindow : Window
     {
-        InitializeComponent();
+        public MainWindow() => InitializeComponent();
     }
 }

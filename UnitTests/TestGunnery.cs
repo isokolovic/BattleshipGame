@@ -20,6 +20,7 @@ namespace Battleship
         public void ShootingTacticsRemainsRandomIfHitResultIsMissed()
         {
             var g = new Gunnery(10, 10, new List<int> { 5, 3 });
+            g.NextTarget();
             g.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(ShootingTactics.Random, g.ShootingTactics);
         }
@@ -29,6 +30,7 @@ namespace Battleship
         public void ShootingTacticsChangesToSurroundingAfterFirstSquareIsHit()
         {
             var g = new Gunnery(10, 10, new List<int> { 5, 3 });
+            g.NextTarget();
             g.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(ShootingTactics.Surrounding, g.ShootingTactics);
         }
@@ -38,7 +40,9 @@ namespace Battleship
         public void ShootingTacticsRemainsSurroundingAfterSecondSqaureIsMissed()
         {
             var g = new Gunnery(10, 10, new List<int> { 5, 3 });
+            g.NextTarget();
             g.ProcessHitResult(HitResult.Hit);
+            g.NextTarget();
             g.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(ShootingTactics.Surrounding, g.ShootingTactics);
         }
@@ -48,7 +52,9 @@ namespace Battleship
         public void ShootingTacticsChangesFromSurroundingToInlineAfterSecondSquareIsHit()
         {
             var g = new Gunnery(10, 10, new List<int> { 5, 3 });
+            g.NextTarget();
             g.ProcessHitResult(HitResult.Hit);
+            g.NextTarget();
             g.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(ShootingTactics.Inline, g.ShootingTactics);
         }
@@ -58,8 +64,11 @@ namespace Battleship
         public void ShootingTacticsRemainsInlineAfterThirdSquareIsMissed()
         {
             var g = new Gunnery(10, 10, new List<int> { 5, 3 });
+            g.NextTarget();
             g.ProcessHitResult(HitResult.Hit);
+            g.NextTarget();
             g.ProcessHitResult(HitResult.Hit);
+            g.NextTarget();
             g.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(ShootingTactics.Inline, g.ShootingTactics);
         }
@@ -69,7 +78,9 @@ namespace Battleship
         public void ShootingTacticsChangesToRandomAfterShipIsSunken()
         {
             var g = new Gunnery(10, 10, new List<int> { 5, 2 });
+            g.NextTarget();
             g.ProcessHitResult(HitResult.Hit);
+            g.NextTarget();
             g.ProcessHitResult(HitResult.Sunken);
             Assert.AreEqual(ShootingTactics.Random, g.ShootingTactics);
         }

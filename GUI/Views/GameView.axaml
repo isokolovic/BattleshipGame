@@ -1,0 +1,79 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:GUI.ViewModels"
+             xmlns:views="using:GUI.Views"
+             x:Class="GUI.Views.GameView"
+             x:DataType="vm:GameViewModel">
+
+	<Grid RowDefinitions="Auto,*">
+
+		<!-- Top bar -->
+		<Border Grid.Row="0" Background="White" Padding="12,6"
+                BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+			<Grid ColumnDefinitions="Auto,*,Auto">
+				<Button Grid.Column="0" Content="New Game"
+                        Command="{Binding RestartCommand}"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        Padding="16,6"
+                        Background="#F5F5F5"
+                        Foreground="#616161"
+                        CornerRadius="6"
+                        BorderBrush="#E0E0E0"
+                        BorderThickness="1"/>
+
+				<TextBlock Grid.Column="1" Text="{Binding GameMessage}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontSize="14" FontWeight="SemiBold" Foreground="#1976D2"/>
+
+				<StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="20" VerticalAlignment="Center">
+					<TextBlock Text="{Binding HumanShipsLeft, StringFormat='Your ships: {0}'}"
+                               FontSize="13" Foreground="#424242"/>
+					<TextBlock Text="{Binding ComputerShipsLeft, StringFormat='Enemy ships: {0}'}"
+                               FontSize="13" Foreground="#424242"/>
+				</StackPanel>
+			</Grid>
+		</Border>
+
+		<!-- Grids area -->
+		<StackPanel Grid.Row="1" Orientation="Horizontal"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Spacing="12" Margin="8,6">
+
+			<!-- Player grid -->
+			<Border Classes="grid-panel"
+                    Classes.active="{Binding IsPlayerGridActive}">
+				<StackPanel Spacing="8">
+					<TextBlock Text="YOUR FLEET"
+                               FontWeight="Bold" FontSize="13"
+                               Foreground="#1976D2"
+                               HorizontalAlignment="Center"
+                               LetterSpacing="1"/>
+					<TextBlock Text="{Binding LastComputerTarget, StringFormat='Last hit: {0}'}"
+                               FontSize="11" Foreground="#9E9E9E"
+                               HorizontalAlignment="Center"/>
+					<views:GridView DataContext="{Binding PlayerGrid}"/>
+				</StackPanel>
+			</Border>
+
+			<!-- Enemy grid -->
+			<Border Classes="grid-panel"
+                    Classes.active="{Binding IsEnemyGridActive}">
+				<StackPanel Spacing="8">
+					<TextBlock Text="ENEMY FLEET"
+                               FontWeight="Bold" FontSize="13"
+                               Foreground="#E53935"
+                               HorizontalAlignment="Center"
+                               LetterSpacing="1"/>
+					<TextBlock Text="{Binding LastHumanTarget, StringFormat='Last shot: {0}'}"
+                               FontSize="11" Foreground="#9E9E9E"
+                               HorizontalAlignment="Center"/>
+					<views:GridView DataContext="{Binding EnemyGrid}"/>
+				</StackPanel>
+			</Border>
+
+		</StackPanel>
+
+	</Grid>
+
+</UserControl>

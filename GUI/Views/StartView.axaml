@@ -1,0 +1,39 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:GUI.ViewModels"
+             x:Class="GUI.Views.StartView"
+             x:DataType="vm:MainWindowViewModel">
+
+	<StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="28">
+
+		<TextBlock Text="&#x2693;"
+                   FontSize="72"
+                   HorizontalAlignment="Center"
+                   Foreground="#1976D2"/>
+
+		<TextBlock Text="BATTLESHIP"
+                   FontSize="52"
+                   FontWeight="Black"
+                   Foreground="#212121"
+                   HorizontalAlignment="Center"
+                   LetterSpacing="8"/>
+
+		<Button Command="{Binding StartGameCommand}"
+                HorizontalAlignment="Center"
+                Width="220"
+                Height="50"
+                Background="#1976D2"
+                Foreground="White"
+                CornerRadius="25"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center">
+			<TextBlock Text="Start Game"
+                       FontSize="16"
+                       FontWeight="SemiBold"/>
+		</Button>
+
+	</StackPanel>
+
+</UserControl>
